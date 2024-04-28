@@ -32,4 +32,17 @@ public class User extends Timestamped{
 
     @Column(nullable = false)
     private String email;
+
+    public void update(String password, String nickname, String name, String phone, String email ){
+        if(password != null)
+            this.password = password;
+        if(nickname != null)
+            this.nickname = nickname;
+        if(name != null)
+            this.name = name;
+        if(phone != null)
+            this.phone = phone;
+        if(email != null)
+            this.email = email;
+    }
 }

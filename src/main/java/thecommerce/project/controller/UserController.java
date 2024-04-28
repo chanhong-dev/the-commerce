@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import thecommerce.project.dto.request.UserJoinRequestDto;
+import thecommerce.project.dto.request.UserRequestDto;
 import thecommerce.project.service.UserService;
 
 @Controller
@@ -14,7 +14,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping(value = "/join")
-    public ResponseEntity<?> joinUser(@RequestBody UserJoinRequestDto userJoinRequestDto){
+    public ResponseEntity<?> joinUser(@RequestBody UserRequestDto userJoinRequestDto){
 
         return userService.joinUser(userJoinRequestDto);
     }
@@ -25,5 +25,12 @@ public class UserController {
                                       @RequestParam(value = "sort", defaultValue = "name") String sort){
 
         return userService.getUsers(page, pageSize, sort);
+    }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<?> updateUser(@PathVariable String userId,
+                             @RequestBody UserRequestDto userRequestDto) {
+
+        return userService.updateUser(userId, userRequestDto);
     }
 }

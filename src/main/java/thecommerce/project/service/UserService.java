@@ -8,9 +8,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import thecommerce.project.domain.User;
-import thecommerce.project.dto.request.UserJoinRequestDto;
-import thecommerce.project.dto.response.UsersResponseDto;
+import thecommerce.project.dto.request.UserRequestDto;
+import thecommerce.project.dto.response.UserResponseDto;
 import thecommerce.project.enums.ErrorCode;
 import thecommerce.project.exception.CustomException;
 import thecommerce.project.repository.UserRepository;
@@ -25,7 +26,7 @@ public class UserService {
         private final UserRepository userRepository;
 
 
-    public ResponseEntity<?> joinUser(UserJoinRequestDto userJoinRequestDto) {
+    public ResponseEntity<?> joinUser(UserRequestDto userJoinRequestDto) {
         String userId = userJoinRequestDto.getUserId();
         // 회원 ID 중복 확인
         Optional<User> found = userRepository.findById(userId);
@@ -47,12 +48,12 @@ public class UserService {
     }
 
     public ResponseEntity<?> getUsers(int page, int pageSize, String sort) {
-        List<UsersResponseDto> userDtos = new ArrayList<>();
+        List<UserResponseDto> userDtos = new ArrayList<>();
         Pageable pageable = PageRequest.of(page-1, pageSize,Sort.by(sort).ascending());
         Page<User> users =  userRepository.findAll(pageable);
 
         for (User user: users) {
-            userDtos.add(UsersResponseDto.builder()
+            userDtos.add(UserResponseDto.builder()
                             .userId(user.getUserId())
                             .name(user.getName())
                             .email(user.getEmail())
@@ -64,4 +65,17 @@ public class UserService {
 
         return new ResponseEntity<>(userDtos, HttpStatus.OK);
     }
+
+    @Transactional
+    public ResponseEntity<?> updateUser(String userId, UserRequestDto userRequestDto) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null) {
+            throw new CustomException(ErrorCode.NOT_FOUND_USER);
+        }else {
+            user.update(userRequestDto.getPassword(), userRequestDto.getNickname(), userRequestDto.getName(), userRequestDto.getPhone(), userRequestDto.getEmail());
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+    }
+
+
 }

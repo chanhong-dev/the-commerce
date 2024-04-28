@@ -1,12 +1,13 @@
-package thecommerce.project.dto.response;
+package thecommerce.project.dto.request;
 
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
-public class UsersResponseDto {
+public class UserRequestDto {
+
     private String userId;
+
+    private String password;
 
     private String nickname;
 
