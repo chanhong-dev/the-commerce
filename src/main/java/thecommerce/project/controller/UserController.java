@@ -3,9 +3,12 @@ package thecommerce.project.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import thecommerce.project.dto.request.UserRequestDto;
 import thecommerce.project.service.UserService;
+
+import javax.validation.Valid;
 
 @Controller
 @RequiredArgsConstructor
@@ -14,7 +17,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping(value = "/join")
-    public ResponseEntity<?> joinUser(@RequestBody UserRequestDto userJoinRequestDto){
+    public ResponseEntity<?> joinUser(@Validated @RequestBody UserRequestDto userJoinRequestDto){
 
         return userService.joinUser(userJoinRequestDto);
     }
