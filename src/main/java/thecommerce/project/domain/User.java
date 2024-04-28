@@ -1,9 +1,10 @@
 package thecommerce.project.domain;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -12,9 +13,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userIdx;
-
     @Column(nullable = false)
     private String userId;
 
